@@ -21,20 +21,39 @@
 
   https://docs.arduino.cc/built-in-examples/basics/Blink/
 */
-
-
+int greenLED = 9;
+int yellowLED = 10; 
 int whiteLED = 12;
+int blueLED = 11;
+
 
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin 12 as an output.
+  pinMode(greenLED, OUTPUT);
   pinMode(whiteLED, OUTPUT);
+  pinMode(blueLED, OUTPUT);
+  pinMode(yellowLED, OUTPUT);
+
 }
 
 // the loop function runs over and over again forever
 void loop() {
   digitalWrite(whiteLED, HIGH);  // turn the LED on (HIGH is the voltage level)
-  delay(3000);                      // wait for a second
+  delay(3000);                   // wait for a second
   digitalWrite(whiteLED, LOW);   // turn the LED off by making the voltage LOW
-  delay(500);                      // wait for a second
+  delay(500);                    // wait for a second
+  digitalWrite(blueLED, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(3000);                   // wait for a second
+  digitalWrite(blueLED, LOW);    // turn the LED off by making the voltage LOW
+  delay(500);                    // wait for a second
+  delay(500);                    // wait for a second
+  digitalWrite(yellowLED, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(3000);                   // wait for a second
+  digitalWrite(yellowLED, LOW);    // turn the LED off by making the voltage LOW
+  delay(500);                    // wait for a second
+  digitalWrite(greenLED, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(3000);                   // wait for a second
+  digitalWrite(greenLED, LOW);    // turn the LED off by making the voltage LOW
+  delay(500);                    // wait for a second
 }
