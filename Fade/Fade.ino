@@ -13,31 +13,64 @@
   https://docs.arduino.cc/built-in-examples/basics/Fade/
 */
 
-int yellowLed = 9;         // the PWM pin the LED is attached to
-int whiteLed = 10;         // the PWM pin the LED is attached to
-int brightness = 0;  // how bright the LED is
-int fadeAmount = 5;  // how many points to fade the LED by
+const int led1 = 9;
+const int led2 = 10;
+const int led3 = 11;
 
-// the setup routine runs once when you press reset:
+int brightness1 = 0;
+int brightness2 = 0;
+int brightness3 = 0;
+
+int fadeAmount1 = 5;
+int fadeAmount2 = 5;
+int fadeAmount3 = 5;
+
+unsigned long previousMillis1 = 0;
+unsigned long previousMillis2 = 0;
+unsigned long previousMillis3 = 0;
+
+const int fadeDelay = 30;
+const int delayOffset1 = 0;     // Start immediately
+const int delayOffset2 = 1000;  // Start 1 second later
+const int delayOffset3 = 2000;  // Start 2 seconds later
+
 void setup() {
-  // declare pin 9 to be an output:
-  pinMode(yellowLed, OUTPUT);
-  pinMode(whiteLed, OUTPUT);
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
 }
 
-// the loop routine runs over and over again forever:
 void loop() {
-  // set the brightness of pin 9:
-  analogWrite(yellowLed, brightness);
-  analogWrite(whiteLed, brightness);
+  unsigned long currentMillis = millis();
 
-  // change the brightness for next time through the loop:
-  brightness = brightness + fadeAmount;
-
-  // reverse the direction of the fading at the ends of the fade:
-  if (brightness <= 0 || brightness >= 255) {
-    fadeAmount = -fadeAmount;
+  // LED 1
+  if (currentMillis >= delayOffset1 && currentMillis - previousMillis1 >= fadeDelay) {
+    brightness1 += fadeAmount1;
+    if (brightness1 <= 0 || brightness1 >= 255) {
+      fadeAmount1 = -fadeAmount1;
+    }
+    analogWrite(led1, brightness1);
+    previousMillis1 = currentMillis;
   }
-  // wait for 30 milliseconds to see the dimming effect
-  delay(30);
+
+  // LED 2
+  if (currentMillis >= delayOffset2 && currentMillis - previousMillis2 >= fadeDelay) {
+    brightness2 += fadeAmount2;
+    if (brightness2 <= 0 || brightness2 >= 255) {
+      fadeAmount2 = -fadeAmount2;
+    }
+    analogWrite(led2, brightness2);
+    previousMillis2 = currentMillis;
+  }
+
+  // LED 3
+  if (currentMillis >= delayOffset3 && currentMillis - previousMillis3 >= fadeDelay) {
+    brightness3 += fadeAmount3;
+    if (brightness3 <= 0 || brightness3 >= 255) {
+      fadeAmount3 = -fadeAmount3;
+    }
+    analogWrite(led3, brightness3);
+    previousMillis3 = currentMillis;
+  }
 }
+
