@@ -315,9 +315,12 @@ int durations[] = {
   16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
 };
 
-int red1LED = 7;
+int red7LED = 7;
 int blueLED = 6; 
-int red2LED = 5;
+int red5LED = 5;
+int red4LED = 4;
+int whiteLED = 3;
+int red2LED = 2;
 
 
 
@@ -325,7 +328,10 @@ int red2LED = 5;
 void setup()
 {
   pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(red1LED, OUTPUT);
+  pinMode(red7LED, OUTPUT);
+  pinMode(red5LED, OUTPUT);
+  pinMode(red4LED, OUTPUT);
+  pinMode(whiteLED, OUTPUT);
   pinMode(red2LED, OUTPUT);
   pinMode(blueLED, OUTPUT);
 }
@@ -351,15 +357,21 @@ void loop()
       if (currentTime - lastBlink >= 50) 
       {
         ledState = !ledState;
-        digitalWrite(red1LED, ledState ? HIGH : LOW);
-        digitalWrite(red2LED, ledState ? HIGH : LOW);
+        digitalWrite(red7LED, ledState ? HIGH : LOW);
+        digitalWrite(red5LED, ledState ? HIGH : LOW);
         digitalWrite(blueLED, ledState ? HIGH : LOW);
+        digitalWrite(red4LED, ledState ? HIGH : LOW);
+        digitalWrite(whiteLED, ledState ? HIGH : LOW);
+        digitalWrite(red2LED, ledState ? HIGH : LOW);
         lastBlink = currentTime;
       }
     }
 
     // Turn off all LEDs after the note
-    digitalWrite(red1LED, LOW);
+    digitalWrite(red7LED, LOW);
+    digitalWrite(red5LED, LOW);
+    digitalWrite(red4LED, LOW);
+    digitalWrite(whiteLED, LOW);
     digitalWrite(red2LED, LOW);
     digitalWrite(blueLED, LOW);
 
