@@ -1,3 +1,4 @@
+// Defines all the notes and the frequency they play at.
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35
@@ -88,9 +89,10 @@
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
 
-
+//Initialises buzzer pin 8.
 #define BUZZER_PIN 8
 
+// Function where you insert your song/melody to be played.
 int melody[] = {
   NOTE_E2, NOTE_E2, NOTE_E3, NOTE_E2, NOTE_E2, NOTE_D3, NOTE_E2, NOTE_E2, 
   NOTE_C3, NOTE_E2, NOTE_E2, NOTE_AS2, NOTE_E2, NOTE_E2, NOTE_B2, NOTE_C3,
@@ -203,6 +205,7 @@ int melody[] = {
   NOTE_B3, NOTE_G3, NOTE_E3, NOTE_B2, NOTE_E3, NOTE_G3, NOTE_C4, NOTE_B3, NOTE_G3, NOTE_B3, NOTE_G3, NOTE_E3
 };
 
+//Duration of notes corresponds to melody function's notes. Ex: 8 makes NOTE_E2 an eighth note.
 int durations[] = {
   8, 8, 8, 8, 8, 8, 8, 8, 
   8, 8, 8, 8, 8, 8, 8, 8,
@@ -315,19 +318,20 @@ int durations[] = {
   16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
 };
 
-int red7LED = 7;
-int blueLED = 6; 
-int red5LED = 5;
-int red4LED = 4;
-int whiteLED = 3;
-int red2LED = 2;
-
-
-
+// Define LED pins connected to the Arduino digital output pins
+int red7LED = 7;     // Red LED connected to pin 7
+int blueLED = 6;     // Blue LED connected to pin 6
+int red5LED = 5;     // Red LED connected to pin 5
+int red4LED = 4;     // Red LED connected to pin 4
+int whiteLED = 3;    // White LED connected to pin 3
+int red2LED = 2;     // Red LED connected to pin 2
 
 void setup()
 {
+  // Set the buzzer pin to output mode
   pinMode(BUZZER_PIN, OUTPUT);
+
+  // Set all LED pins to output mode
   pinMode(red7LED, OUTPUT);
   pinMode(red5LED, OUTPUT);
   pinMode(red4LED, OUTPUT);
@@ -338,36 +342,47 @@ void setup()
 
 void loop()
 {
+  // Calculate how many notes are in the melody array
   int size = sizeof(durations) / sizeof(int);
 
+  // Iterate over each note in the melody
   for (int note = 0; note < size; note++) 
   {
+    // Calculate the note duration based on the rhythm (e.g., quarter, eighth notes)
+    // For example, 1000 / 4 = 250ms for a quarter note
     int duration = 1000 / durations[note];
+
+    // Start playing the current note on the buzzer
     tone(BUZZER_PIN, melody[note], duration);
 
+    // Record the time the note starts playing
     unsigned long startTime = millis();
     unsigned long currentTime = startTime;
-    bool ledState = false;
+    bool ledState = false;            // Tracks current LED state (on/off)
     unsigned long lastBlink = startTime;
 
-    // Blink all 3 LEDs without blocking
+    // Blink all LEDs rapidly while the note is playing
+    // Non-blocking method using millis() instead of delay()
     while (currentTime - startTime < duration) 
     {
-      currentTime = millis();
-      if (currentTime - lastBlink >= 50) 
+      currentTime = millis();  // Get the current time
+      if (currentTime - lastBlink >= 50) // Blink interval: 50 milliseconds
       {
-        ledState = !ledState;
+        ledState = !ledState;  // Toggle LED state (on -> off -> on...)
+        
+        // Set LEDs to the current state
         digitalWrite(red7LED, ledState ? HIGH : LOW);
         digitalWrite(red5LED, ledState ? HIGH : LOW);
-        digitalWrite(blueLED, ledState ? HIGH : LOW);
         digitalWrite(red4LED, ledState ? HIGH : LOW);
         digitalWrite(whiteLED, ledState ? HIGH : LOW);
         digitalWrite(red2LED, ledState ? HIGH : LOW);
-        lastBlink = currentTime;
+        digitalWrite(blueLED, ledState ? HIGH : LOW);
+
+        lastBlink = currentTime; // Update the last blink time
       }
     }
 
-    // Turn off all LEDs after the note
+    // Turn off all LEDs after the note finishes playing
     digitalWrite(red7LED, LOW);
     digitalWrite(red5LED, LOW);
     digitalWrite(red4LED, LOW);
@@ -375,9 +390,12 @@ void loop()
     digitalWrite(red2LED, LOW);
     digitalWrite(blueLED, LOW);
 
+    // Short pause between notes (30% of the note duration)
+    // Helps separate notes for clearer sound
     int pauseBetweenNotes = duration * 0.30;
     delay(pauseBetweenNotes);
 
+    // Stop playing the current tone
     noTone(BUZZER_PIN);
   }
 }
